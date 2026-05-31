@@ -5,12 +5,10 @@ import java.io.IOException;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.Matchers.*;
 
-
 //Classe que contém os testes de API
 public class BookingTest {
 
     BookingEndpoint bookingEndpoint = new BookingEndpoint();
-
 
     @Test
     public void buscarTodasReservas() {
@@ -37,11 +35,6 @@ public class BookingTest {
 
         // Usa o ID e o token capturados para alterar a reserva
         bookingEndpoint.alterarReserva(bookingId, token);
-    }
-
-    @Test
-    public void fazerLogin() throws IOException {
-        String token = bookingEndpoint.login();
     }
 
     @Test

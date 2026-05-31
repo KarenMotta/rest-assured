@@ -1,10 +1,8 @@
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -45,16 +43,16 @@ public class BookingEndpoint {
         given()
                 .header("Accept", "application/json")
                 .when()
-                .get("/booking/1004")
+                .get("/booking/281")
                 .then()
                 .statusCode(200)
-                .body("firstname", equalTo("Josh"))
-                .body("lastname", equalTo("Allen"))
+                .body("firstname", equalTo("John"))
+                .body("lastname", equalTo("Smith"))
                 .body("totalprice", equalTo(111))
                 .body("depositpaid", is(true))
                 .body("bookingdates.checkin", equalTo("2018-01-01"))
                 .body("bookingdates.checkout", equalTo("2019-01-01"))
-                .body("additionalneeds", equalTo("super bowls"));
+                .body("additionalneeds", equalTo("Breakfast"));
     }
 
     public String lerJson(String caminhoArquivo) throws IOException {
