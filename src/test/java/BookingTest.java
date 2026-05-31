@@ -2,9 +2,6 @@ import io.restassured.RestAssured; //Biblioteca para automação de testes REST
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test; //Framework de testes JUnit 5
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.Matchers.*;
 
@@ -14,39 +11,48 @@ public class BookingTest {
 
     BookingEndpoint bookingEndpoint = new BookingEndpoint();
 
-    public String lerJson(String caminhoArquivo) throws IOException {
-        return new String(Files.readAllBytes(Paths.get(caminhoArquivo)));
-    }
 
     @Test
-    public void consultaPageObjects() {
+    public void buscarTodasReservas() {
         bookingEndpoint.buscarTodasReservas();
     }
 
     @Test
-    public void consultaPageObjectsComFiltro() {
+    public void buscarReservaEspecifica() {
         bookingEndpoint.buscarReservaEspecifica();
     }
 
-    @Tag("smoke")
     @Test
     public void cadastrarReserva() throws IOException {
-        RestAssured.baseURI = "https://restful-booker.herokuapp.com";
+        bookingEndpoint.cadastrarReserva();
+    }
 
-        String jsonBody = lerJson("src/test/resources/payloads/reserva.json");
-        given()
-                .header("Content-Type", "application/json")
-                .body(jsonBody)
-                .when()
-                .post("/booking")
-                .then()
-                .statusCode(200)
-                .body("booking.firstname", equalTo("Karen5"))
-                .body("booking.lastname", equalTo("Motta5"))
-                .body("booking.totalprice", equalTo(300))
-                .body("booking.depositpaid", is(true))
-                .body("booking.bookingdates.checkin", equalTo("2026-06-01"))
-                .body("booking.bookingdates.checkout", equalTo("2026-06-10"));
-                //.body("booking.additionalneeds", equalTo("Breakfast"));
+    @Test
+    public void cadastrarEAlterarReserva() throws IOException {
+        // Faz login e captura o token
+        String token = bookingEndpoint.login();
+
+        // Cadastra uma nova reserva e captura o ID
+        Integer bookingId = bookingEndpoint.cadastrarReserva();
+
+        // Usa o ID e o token capturados para alterar a reserva
+        bookingEndpoint.alterarReserva(bookingId, token);
     }
+
+    @Test
+    public void fazerLogin() throws IOException {
+        String token = bookingEndpoint.login();
     }
+
+    @Test
+    public void deletarReserva() throws IOException {
+        // Faz login e capture o token
+        String token = bookingEndpoint.login();
+
+        //Cadastra uma nova reserva e captura o ID
+        Integer bookingId = bookingEndpoint.cadastrarReserva();
+
+        // Usa o ID e o token capturados para deletar a reserva
+        bookingEndpoint.deletarReserva(bookingId, token);
+    }
+}
