@@ -5,7 +5,7 @@ import java.io.IOException;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.Matchers.*;
 
-//Classe que contém os testes de API
+// Classe que contém os testes de API
 public class BookingTest {
 
     BookingEndpoint bookingEndpoint = new BookingEndpoint();
@@ -39,7 +39,7 @@ public class BookingTest {
 
     @Test
     public void deletarReserva() throws IOException {
-        // Faz login e capture o token
+        // Faz login e captura o token
         String token = bookingEndpoint.login();
 
         //Cadastra uma nova reserva e captura o ID
